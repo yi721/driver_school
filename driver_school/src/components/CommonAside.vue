@@ -41,7 +41,6 @@ export default {
                     name: "trainer",
                     label: "教练信息管理",
                     url: "/User/Trainer",
-
                 },
                 {
                     path: "/main/student",

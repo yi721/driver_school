@@ -54,7 +54,8 @@ export default {
     mixins: [mixin],
     data() {
         return {
-            registerForm: { // 注册
+            // 注册
+            registerForm: {
                 username: '',
                 password: '',
                 sex: '',

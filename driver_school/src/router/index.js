@@ -43,6 +43,20 @@ const adminRoutes = [
 
 
 ];
+//驾校管理员
+const driverRoutes = [
+    {
+        path: "daka",
+        name: "daka",
+        component: () => import("../views/Driver/daka.vue"),//打卡信息
+    },
+    {
+        path: "grade",
+        name: "grade",
+        component: () => import("../views/Driver/grade.vue"),//教练信息管理
+    },
+
+];
 const routes = [
     {
         path: "/",
@@ -70,6 +84,7 @@ const routes = [
         },
         ...adminRoutes,
         ...schoolRoutes,
+        ...driverRoutes,
         ],
     },]
 

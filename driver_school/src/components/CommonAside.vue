@@ -60,6 +60,24 @@ export default {
                     label: "所有学员信息管理",
                     url: "/User/schooladmin",
                 },
+                {
+                    path: "/main/xueyuan",
+                    name: "xueyuan",
+                    label: "所有学员信息管理",
+                    url: "/User/schooladmin",
+                },
+                {
+                    path: "/main/daka",
+                    name: "daka",
+                    label: "打卡",
+                    url: "/Driver/daka",
+                },
+                {
+                    path: "/main/grade",
+                    name: "grade",
+                    label: "成绩",
+                    url: "/Driver/grade",
+                },
             ]
         };
     },

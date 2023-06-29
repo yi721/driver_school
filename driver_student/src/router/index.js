@@ -11,22 +11,22 @@ const routes = [
     {
         path: "/",
         name: "home",
-        component: () => import("../pages/Home.vue"),//驾校管理
+        component: () => import("../pages/Home.vue"),
     },
     {
         path: "/register",
         name: "register",
-        component: () => import("../pages/Register.vue"),//驾校管理
+        component: () => import("../pages/Register.vue"),
     },
     {
         path: "/login",
         name: "login",
-        component: () => import("../pages/LoginIn.vue"),//驾校管理
+        component: () => import("../pages/LoginIn.vue"),
     },
     {
-        path: "/study",
-        name: "study",
-        component: () => import("../pages/studyList.vue"),
+        path: "/video",
+        name: "video",
+        component: () => import("../pages/video.vue"),
     },
     {
         path: "/excerise",

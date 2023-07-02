@@ -38,6 +38,8 @@
 
 <script>
 import { successMsg, errorMsg } from '@/utils/message'
+// import axios from 'axios'
+// import vueAxios from 'vue-axios'
 export default {
     computed: {
         elIcon() {
@@ -122,10 +124,10 @@ export default {
         submit() {
             this.$refs['registerForm'].validate((result) => {
                 if (result) {
-                    this.$http.post('user/register', this.model).then(res => {
+                    this.$http.post('/user/register', this.model).then(res => {
                         console.log(res);
                         successMsg('注册成功！')
-                        this.$router.push('/login')
+                        this.$router.push('/Login')
                     }).catch(e => {
                         console.log(e);
                     })

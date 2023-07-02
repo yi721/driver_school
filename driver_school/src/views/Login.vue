@@ -26,12 +26,12 @@
           </el-input>
         </el-form-item> -->
 
-        <el-form-item label="验证码" prop="validateCode">
+        <!-- <el-form-item label="验证码" prop="validateCode">
           <el-row type="flex">
             <el-input v-model="model.validateCode"></el-input>
             <vertifyCode :validate-code.sync="validateCode"></vertifyCode>
           </el-row>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item style="display: flex; justify-content: center">
           <el-button @click="submit" type="primary">登录</el-button>
           <el-button @click="$router.push('/register')" style="margin-left: 5rem">注册</el-button>
@@ -52,74 +52,138 @@
 import { setToken } from "@/utils/setToken";
 import { successMsg, errorMsg } from "@/utils/message";
 import { nameRule, passRule } from "../utils/validate.js";
-export default {
-  components: {
-    vertifyCode: () => import("@/components/VertifyCode"),
-  },
-  computed: {
-    elIcon() {
-      return this.flag ? "el-icon-minus" : "el-icon-view";
-    },
-  },
-  data() {
-    return {
-      flag: false,
-      validateCode: "",
-      model: {
-        username: "",
-        password: "",
-        validateCode: "",
-      },
-      rules: {
-        // username: [
-        //   { required: true, message: "请输入用户名", trigger: "blur" },
-        // ],
-        // password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        username: [{ validator: nameRule, trigger: "blur" }],
-        password: [{ validator: passRule, trigger: "blur" }],
-        validateCode: [
-          { required: true, message: "请输入验证码", trigger: "blur" },
-        ],
-      },
-    };
-  },
-  methods: {
-    submit() {
-      this.$refs["registerForm"].validate(async (result) => {
-        if (result) {
-          // 验证登录
-          if (
-            this.validateCode.toLowerCase() ===
-            this.model.validateCode.toLowerCase()
-          ) {
-            await this.$http
-              .post("/user/login", this.model)
-              .then(async (res) => {
-                console.log(res);
-                if (res.data.data.userRole.id === 4) {
-                  errorMsg("无权限");
-                  return;
-                }
-                setToken(res.data.data.tokenHead + " " + res.data.data.token);
+// export default {
+//   // components: {
+//   //   vertifyCode: () => import("@/components/VertifyCode"),
+//   // },
+//   computed: {
+//     elIcon() {
+//       return this.flag ? "el-icon-minus" : "el-icon-view";
+//     },
+//   },
+//   data() {
+//     return {
+//       flag: false,
+//       // validateCode: "",
+//       model: {
+//         username: "",
+//         password: "",
+//         // validateCode: "",
+//       },
+//       rules: {
+//         username: [
+//           { required: true, message: "请输入用户名", trigger: "blur" },
+//         ],
+//         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+//         // username: [{ validator: nameRule, trigger: "blur" }],
+//         // password: [{ validator: passRule, trigger: "blur" }],
+//         // validateCode: [
+//         //   { required: true, message: "请输入验证码", trigger: "blur" },
+//         // ],
+//       },
+//     };
+//   },
+//   methods: {
+//     submit() {
+//       console.log(111)
 
-                // console.log('userInfo:', res.data.data.userInfo);
-                this.$store.commit("setUserInfo", res.data.data.userInfo);
-                this.$store.commit("setUserRole", res.data.data.userRole);
-                this.$router.push("/main");
-                successMsg("登录成功");
-              });
-          } else {
-            errorMsg("验证码错误");
-            return;
-          }
-        } else {
-          errorMsg("检查填写！");
-          return;
-        }
-      });
+//             this.$refs['registerForm'].validate(async (result) => {
+//                 if (result) 
+//                     // 验证登录
+//                      {
+//                         // let_this=this;
+//                         console.log(this.$http)
+//                         let res = await this.$http.post('/user/login', this.model).then(async res => {
+//                             console.log(res);
+//                             if (res.data.data.userRole.id === 4) {
+//                                 errorMsg('无权限')
+//                                 return
+//                             }
+//                             setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
+
+//                             // console.log('userInfo:', res.data.data.userInfo);
+//                             this.$store.commit('setUserInfo', res.data.data.userInfo)
+//                             this.$store.commit('setUserRole', res.data.data.userRole)
+//                             this.$router.push('/main')
+//                             successMsg('登录成功')
+//                         })
+//                     } 
+//                 else {
+//                     errorMsg('检查填写！')
+//                     return
+//                 }
+
+//             });
+//         },
+//     },
+ 
+ 
+// };
+export default {
+    components: {
+        vertifyCode: () => import("@/components/VertifyCode"),
     },
-  },
-};
+    computed: {
+        elIcon() {
+            return this.flag ? "el-icon-minus" : "el-icon-view";
+        }
+    },
+    data() {
+        return {
+            flag: false,
+            validateCode: '',
+            model: {
+                username: "",
+                password: "",
+                validateCode: '',
+            },
+            rules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ],
+                validateCode: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' }
+                ]
+            }
+        }
+    },
+    methods: {
+        submit() {
+            this.$refs['registerForm'].validate(async (result) => {
+                if (result) {
+                    // 验证登录
+                    if (this.validateCode.toLowerCase() === this.model.validateCode.toLowerCase()) {
+                        let res = await this.$http.post('/user/login', this.model).then(async res => {
+                            console.log(res);
+                            if (res.data.data.userRole.id === 4) {
+                                errorMsg('无权限')
+                                return
+                            }
+                            setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
+
+                            // console.log('userInfo:', res.data.data.userInfo);
+                            this.$store.commit('setUserInfo', res.data.data.userInfo)
+                            this.$store.commit('setUserRole', res.data.data.userRole)
+                            this.$router.push('/main')
+                            successMsg('登录成功')
+                        })
+                    } else {
+                        errorMsg('验证码错误')
+                        return
+                    }
+                } else {
+                    errorMsg('检查填写！')
+                    return
+                }
+
+            });
+        },
+    },
+
+}
 </script>
 
 <style lang="less" scoped>

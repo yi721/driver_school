@@ -43,7 +43,7 @@ const adminRoutes = [
 
 
 ];
-//驾校管理员
+//教练
 const driverRoutes = [
     {
         path: "daka",
@@ -62,16 +62,6 @@ const routes = [
         path: "/",
         redirect: "/home",
     },
-    {
-        path: "/login",
-        name: "login",
-        component: () => import("../views/Login.vue"),
-    },
-    {
-        path: "/register",
-        name: "register",
-        component: () => import("../views/register.vue"),
-    },
 
     {
         path: "/main",
@@ -82,11 +72,27 @@ const routes = [
             component: () => import("../views/Home"),
             meta: { isPublic: true },
         },
+        {
+            path: "menulist",
+            name: "menulist",
+            component: () => import("../views/menulist.vue"),//驾校管理员审批
+        },
         ...adminRoutes,
         ...schoolRoutes,
         ...driverRoutes,
         ],
-    },]
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: () => import("../views/Login.vue"),
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: () => import("../views/register.vue"),
+    },
+]
 
 // 3.创建router实例
 const router = new VueRouter({

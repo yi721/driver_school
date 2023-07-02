@@ -29,6 +29,7 @@ export default {
                     icon: "s-home",
                     url: "Home/Home",
                 },
+        
                 {
                     path: "/main/audit",
                     name: "audit",
@@ -41,6 +42,12 @@ export default {
                     name: "trainer",
                     label: "教练信息管理",
                     url: "/User/Trainer",
+                },
+                {
+                    path: "/main/school",
+                    name: "school",
+                    label: "驾校信息管理",
+                    url: "/User/school",
                 },
                 {
                     path: "/main/student",
@@ -59,6 +66,24 @@ export default {
                     name: "xueyuan",
                     label: "所有学员信息管理",
                     url: "/User/schooladmin",
+                },
+                {
+                    path: "/main/daka",
+                    name: "daka",
+                    label: "教练打卡信息",
+                    url: "/User/daka",
+                },
+                {
+                    path: "/main/grade",
+                    name: "grade",
+                    label: "教练录入成绩",
+                    url: "/User/grade",
+                },
+                {
+                    path: "menulist",
+                    name: "menulist",
+                    label: "角色列表",
+                    url: "/User/menulist",
                 },
             ]
         };

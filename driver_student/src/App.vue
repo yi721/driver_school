@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <!-- 测试 -->
         <!-- 路由出口 -->
         <!-- 路由匹配到的组件将渲染在这里11 -->
         <the-header></the-header>

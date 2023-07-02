@@ -10,7 +10,16 @@
             </el-table-column>
             <el-table-column prop="name" label="驾校名称" width="80">
             </el-table-column>
-            <el-table-column prop="region" label="省份" width="120">
+            <!-- <el-table-column prop="image" label="驾校图片" width="120">
+                <template v-slot:default="scope">
+          <el-image :src="scope.row.img"/>
+        </template>
+            </el-table-column> -->
+            <el-table-column prop="address" label="驾校详细地址" width="120">
+            </el-table-column>
+            <el-table-column prop="phone" label="驾校联系方式" width="120">
+            </el-table-column>
+            <el-table-column prop="provinceId" label="省份" width="120">
             </el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
@@ -27,9 +36,18 @@
                 <el-form-item label="驾校名称" prop="name">
                     <el-input v-model="model.Id"></el-input>
                 </el-form-item>
-                <el-form-item label="省份" prop="region">
+                <el-form-item label="省份" prop="provinceId">
                     <el-cascader :options="options" v-model="model.selectedOptions">
                     </el-cascader>
+                </el-form-item>
+                <!-- <el-form-item label="驾校图片" prop="image">
+                    <el-input v-model="model.image"></el-input>
+                </el-form-item> -->
+                <el-form-item label="驾校联系方式" prop="phone">
+                    <el-input v-model="model.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="驾校详细地址" prop="address">
+                    <el-input v-model="model.address"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary">
@@ -47,10 +65,15 @@
 import { successMsg } from "@/utils/message";
 import { provinceAndCityData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
-    // inject: ['reload'],
+    inject: ['reload'],
+    async mounted() {
+        const res = await this.$http.get(`/school/school-list`)
+        console.log('res', res);
+        this.schoolList = res.data.data
+    },
     data() {
         let validId = (rule, value, callback) => {
-            if (this.model.Id == '') {
+            if (this.model.id == '') {
                 return callback(new Error('请输入账号'))
             } else {
                 if (!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value)) {
@@ -64,7 +87,10 @@ export default {
             model: {
                 name: '',
                 id: '',
-                region: ''
+                provinceId: '',
+                address: '',
+                // image: '',
+                phone: '',
             },
             keyword: "",
             schoolList: [],
@@ -80,13 +106,29 @@ export default {
                 id: [
                     { required: true, validator: validId, tirgger: 'blur' }
                 ],
-                region: [
+                provinceId: [
                     { required: true, message: '请输入省份', trigger: 'blur' }
+                ],
+                address: [
+                    { required: true, message: '请输入驾校详细地址', trigger: 'blur' }
+                ],
+                // image: [
+                //     { required: true, message: '请输入省份', trigger: 'blur' }
+                // ],
+                phone: [
+                    { required: true, message: '请输入驾校联系方式', trigger: 'blur' }
                 ]
             }
         }
     },
+
     methods: {
+        async inputChanged(keyword) {
+            // const res = await this.$http.get(`/academy/academy-studengt-by-acaid-page?id=${this.userRole.academyId}&keyword=${keyword}&pageSize=${this.pageSize}&pageNum=1`)
+            const res = await this.$http.get(`/diverSchool/find/{id}`)
+            this.studentList = res.data.list
+            this.total = res.data.total
+        },
         addBtnOnClick() {
             this.schoolFormVisible = true
             this.isEdit = false
@@ -103,14 +145,14 @@ export default {
                         // 编辑
                         // 处理region
                         this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/update', this.model)
+                        const res = await this.$http.post('/school/update', this.model)
                         successMsg('修改成功')
                         this.reload()
                     } else {
                         //添加表单
                         // 处理region
                         this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/add', this.model)
+                        const res = await this.$http.post('/school/insert', this.model)
                         successMsg('添加成功')
                         this.reload()
                     }
@@ -132,7 +174,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
+                const res = await this.$http.post(`/school/delete/{id}`)
                 this.$message({
                     type: 'success',
                     message: '删除成功!'

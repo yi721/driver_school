@@ -15,7 +15,6 @@
         </ul>
     </div>
 </template>
-
 <script>
 import { mixin } from '../mixins';
 export default {

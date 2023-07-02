@@ -41,7 +41,7 @@ export default {
             //左侧导航栏
             navMsg: [
                 { name: '首页', path: '/' },
-                { name: '在线学习', path: '/study' },
+                { name: '在线学习', path: '/video' },
                 { name: '在线做题', path: '/excerise' },
                 { name: '我的', path: '/my' },
             ],

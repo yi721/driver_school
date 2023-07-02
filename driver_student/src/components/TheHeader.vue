@@ -23,8 +23,7 @@
                     </div>
                 </div>
             </li>
-            <!-- v-show="!loginIn" -->
-            <li :class="{ active: item.name === activeName }" v-for="item in loginMsg" :key="item.path"
+            <li v-show="!loginIn" :class="{ active: item.name === activeName }" v-for="item in loginMsg" :key="item.path"
                 @click="goPage(item.path, item.name)">
                 {{ item.name }}
             </li>
@@ -41,8 +40,8 @@ export default {
             //左侧导航栏
             navMsg: [
                 { name: '首页', path: '/' },
-                { name: '在线学习', path: '/video' },
-                { name: '在线做题', path: '/excerise' },
+                { name: '试题库', path: '/paper' },
+                { name: '视频库', path: '/video' },
                 { name: '我的', path: '/my' },
             ],
             //右侧导航栏
@@ -56,7 +55,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'activeName'
+            'activeName',
+            'loginIn'
         ])
     },
     methods: {

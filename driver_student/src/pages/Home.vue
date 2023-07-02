@@ -21,88 +21,56 @@ export default {
         return {
             paperList: [
                 {
-                    name: "在线学习", list: [{
+                    name: "试题资料", list: [{
                         id: '1',
-                        name: '第一次在线做题',
-                        pic: ''
+                        name: '科一试题',
+                        pic: '',
+                        url: '',
                     },
                     {
                         id: '2',
-                        name: '第一次在线做题',
-                        pic: ''
+                        name: '科二试题',
+                        pic: '',
+                        url: '',
                     },
                     {
                         id: '3',
-                        name: '第一次在线做题',
-                        pic: ''
+                        name: '科三试题',
+                        pic: '',
+                        url: '',
                     },
                     {
                         id: '4',
-                        name: '第一次在线做题',
-                        pic: ''
-                    },
-                    {
-                        id: '5',
-                        name: '第一次在线做题',
-                        pic: ''
-                    },
-                    {
-                        id: '6',
-                        name: '第一次在线做题',
-                        pic: ''
-                    },
-                    {
-                        id: '7',
-                        name: '第一次在线做题',
-                        pic: ''
-                    },
-                    {
-                        id: '8',
-                        name: '第一次在线做题',
-                        pic: ''
-                    }]
+                        name: '科四试题',
+                        pic: '',
+                        url: '',
+                    }
+                    ]
                 },
                 {
-                    name: "在线做题", list: [
+                    name: "视频资料", list: [
                         {
                             id: '1',
-                            title: '第一次在线学习',
-                            pic: ''
+                            title: '科一视频资料',
+                            pic: '',
+                            url: '',
                         },
                         {
                             id: '2',
-                            title: '第一次在线学习',
+                            title: '科二视频资料',
                             pic: ''
                         },
                         {
                             id: '3',
-                            title: '第一次在线学习',
-                            pic: ''
+                            title: '科三视频资料',
+                            pic: '',
+                            url: '',
                         },
                         {
                             id: '4',
-                            title: '第一次在线学习',
-                            pic: ''
-                        },
-                        {
-                            id: '5',
-                            title: '第一次在线学习',
-                            pic: ''
-                        },
-                        {
-                            id: '6',
-                            title: '第一次在线学习',
-                            pic: ''
-                        },
-                        {
-                            id: '7',
-                            title: '第一次在线学习',
-                            pic: ''
-                        },
-                        {
-                            id: '8',
-                            title: '第一次在线学习',
-                            pic: ''
+                            title: '科四视频资料',
+                            pic: '',
+                            url: '',
                         }
                     ]
                 }

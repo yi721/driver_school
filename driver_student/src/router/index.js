@@ -29,9 +29,14 @@ const routes = [
         component: () => import("../pages/video.vue"),
     },
     {
-        path: "/excerise",
-        name: "excerise",
-        component: () => import("../pages/exerciseList.vue"),
+        path: "/paper",
+        name: "paper",
+        component: () => import("../pages/PaperList.vue"),
+    },
+    {
+        path: "/paperAlbum",
+        name: "paperAlbum",
+        component: () => import("../pages/PaperAlbum.vue"),
     },
     {
         path: "/my",

@@ -1,77 +1,143 @@
 <template>
     <div class="register-page">
-        <loginLogo />
+        <loginLogo></loginLogo>
         <div class="register">
             <div class="register-head">
                 <span>用户注册</span>
             </div>
-            <el-form :model="registerForm" status-icon :rules="rules" ref="registerForm" label-width="70px"
-                class="demo-ruleForm">
-                <el-form-item prop="username" label="用户名">
-                    <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
+            <el-form :rules="rules" ref="registerForm" :model="model" status-icon label-width="70px" class="demo-ruleForm">
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="model.username"></el-input>
                 </el-form-item>
-                <el-form-item prop="password" label="密码">
-                    <el-input type="password" placeholder="密码" v-model="registerForm.password"></el-input>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="model.password" :type="flag ? 'text' : 'password'">
+                        <i slot="suffix" class="icon-style" :class="elIcon" autocomplete="auto" @click="flag = !flag" />
+                    </el-input>
                 </el-form-item>
-                <el-form-item prop="sex" label="性别">
-                    <el-radio-group v-model="registerForm.sex">
-                        <el-radio :label="0">女</el-radio>
-                        <el-radio :label="1">男</el-radio>
-                    </el-radio-group>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="model.email"></el-input>
                 </el-form-item>
-                <el-form-item prop="phoneNum" label="手机">
-                    <el-input placeholder="手机" v-model="registerForm.phoneNum"></el-input>
-                </el-form-item>
-                <el-form-item prop="email" label="邮箱">
-                    <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
-                </el-form-item>
-                <el-form-item prop="birth" label="生日">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="registerForm.birth"
-                        style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item prop="location" label="地区">
-                    <el-select v-model="registerForm.location" placeholder="地区" style="width:100%">
-                        <el-option v-for="item in cities" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
+                <el-row>
+                    <el-form-item label="验证码" prop="authCode">
+                        <el-input v-model="model.authCode">
+                            <el-button slot="append" @click="sendSmsCode" :disabled="disabled">{{ sendBtnText }}</el-button>
+                        </el-input>
+                    </el-form-item>
+                </el-row>
                 <div class="login-btn">
                     <el-button @click="goback(-1)">取消</el-button>
-                    <el-button type="primary">确定</el-button>
+                    <el-button @click="submit" type="primary">确定</el-button>
                 </div>
             </el-form>
         </div>
     </div>
 </template>
-   
 <script>
-import { mixin } from '../mixins'
 import LoginLogo from '../components/LoginLogo.vue'
+import { successMsg, errorMsg } from '@/utils/message';
 export default {
     components: {
         LoginLogo
     },
-    mixins: [mixin],
+    computed: {
+        elIcon() {
+            return this.flag ? "el-icon-minus" : "el-icon-view";
+        }
+    },
     data() {
         return {
+            flag: false,
             // 注册
-            registerForm: {
-                username: '',
-                password: '',
-                sex: '',
-                phoneNum: '',
-                email: '',
-                birth: '',
-                location: ''
+            model: {
+                username: "",
+                password: "",
+                email: "",
+                authCode: ""
             },
-            rules: {},
-            cities: []
+            // 倒计时
+            timer: null,
+            sendBtnText: '发送',
+            counter: 59,
+            // 发送按钮的禁用
+            disabled: false,
+            rules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 2, message: '长度大于2位', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 3, message: '长度大于6位', trigger: 'blur' }
+                ],
+                email: [
+                    { required: true, message: "输入邮箱！", trigger: "blur" },
+                    { pattern: /^\w+@\w+\.\w+$/i, message: '检查格式！', trigger: 'blur' },
+                ],
+                authCode: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' }
+                ],
+            }
         }
     },
     methods: {
         goback(index) {
             this.$router.go(index)
-        }
+        },
+        sendSmsCode() {
+            this.$refs.registerForm.validateField('email', async (result) => {
+                if (result == '') {
+                    await this.$http.get(`mail/send/${this.model.email}`).then(res => {
+                        if (res.data.code == 200) {
+                            successMsg('已发送');
+                        }
+                        if (res === undefined) {
+                            console.log(res, 'res是undefined');
+                            return
+                        }
+                        this.disabled = true
+                        this.counter = 59
+                        this.timer = setInterval(() => {
+                            // 替换文本，用es6里面的``这个来创建字符串模板，让秒实时改变
+                            this.sendBtnText = `${this.counter}秒后重新发送`
+                            this.counter--
+                            if (this.counter < 0) {
+                                // 当计时小于零时，取消该计时器
+                                clearInterval(this.timer)
+                                this.resetTimer()
+                            }
+                        }, 1000)
+                    }).catch(e => {
+                        console.log(e);
+                        errorMsg('发送失败');
+                    })
+                } else {
+                    errorMsg('请检查邮箱格式！');
+                    return
+                }
+            })
+            // 顶部显示发送成功
+            // 发送的api
+        },
+        resetTimer() {
+            this.counter = 59
+            this.disabled = false
+            this.sendBtnText = '发送'
+        },
+        submit() {
+            this.$refs['registerForm'].validate((result) => {
+                if (result) {
+                    this.$http.post('user/register', this.model).then(res => {
+                        console.log(res);
+                        successMsg('注册成功！')
+                        this.$router.push('/')
+                    }).catch(e => {
+                        console.log(e);
+                    })
+                } else {
+                    return
+                }
+            });
+        },
     }
 }
 </script>

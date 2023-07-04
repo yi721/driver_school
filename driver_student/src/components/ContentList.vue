@@ -2,7 +2,7 @@
     <div class="content-list">
         <ul class="section-content">
             <li class="content-item" v-for="(item, index) in contentList" :key="index">
-                <div class="kuo">
+                <div class="kuo" @click="goAlbum(item, item.name)">
                     <img class="item-img" :src="attachImageUrl(item.pic)">
                     <div class="mask">
                         <svg class="icon">
@@ -19,7 +19,16 @@
 import { mixin } from '../mixins';
 export default {
     mixins: [mixin],
-    props: ['contentList']
+    props: ['contentList'],
+    methods: {
+        goAlbum(item, type) {
+            this.$store.commit("setTempList", item);
+            if (type) {//试题
+                this.$router.push({ path: `/paperAlbum` })
+            }
+        }
+    }
+
 }
 </script>
 

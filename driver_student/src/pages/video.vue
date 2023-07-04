@@ -12,10 +12,8 @@
                     </li>
                 </ul>
             </el-aside>
-
-            <el-collapse :margin="isCollapse ? '0 auto' : '20%'">
-                <video-player class="video-player vjs-custom-skin" style="width: 65%;margin:0 auto;overflow: hidden;border-radius: 20px; box-shadow(0 0 5px 1px rgba(0, 0, 0, 0.1));
-  position: relative;" :playsinline="true" :options="playerOptions"></video-player></el-collapse>
+            <video-player class="video-player vjs-custom-skin" style="width: 65%;margin:0 auto;overflow: hidden;border-radius: 20px; box-shadow(0 0 5px 1px rgba(0, 0, 0, 0.1));
+  position: relative;" :playsinline="true" :options="playerOptions"></video-player>
 
         </div>
     </div>

@@ -32,6 +32,9 @@ export default {
         MoPassword
     },
     mounted() {
+        // getData().then((data) => {
+        //     console.log(data)
+        // })
 
     }
 }

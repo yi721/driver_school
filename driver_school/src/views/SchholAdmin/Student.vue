@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>驾校学员信息列表</h1>
-        <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button>
+        <!-- <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button> -->
         <div class="search-container">
             <el-input class="keyword-input" v-model="keyword" placeholder="请输入关键信息" size="small"></el-input>
         </div>
@@ -143,11 +143,11 @@ export default {
         }
     },
     methods: {
-        addBtnOnClick() {
-            this.stuFormVisible = true
-            this.isEdit = false
-            this.model = this.$options.data().model
-        },
+        // addBtnOnClick() {
+        //     this.stuFormVisible = true
+        //     this.isEdit = false
+        //     this.model = this.$options.data().model
+        // },
         resetForm() {
             this.model = this.$options.data().model
         },

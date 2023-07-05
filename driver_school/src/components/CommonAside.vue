@@ -29,6 +29,7 @@ export default {
                     icon: "s-home",
                     url: "Home/Home",
                 },
+        
                 {
                     path: "/main/audit",
                     name: "audit",
@@ -41,6 +42,12 @@ export default {
                     name: "trainer",
                     label: "教练信息管理",
                     url: "/User/Trainer",
+                },
+                {
+                    path: "/main/school",
+                    name: "school",
+                    label: "驾校信息管理",
+                    url: "/User/school",
                 },
                 {
                     path: "/main/student",
@@ -61,6 +68,12 @@ export default {
                     url: "/User/schooladmin",
                 },
                 {
+<<<<<<< HEAD
+                    path: "/main/daka",
+                    name: "daka",
+                    label: "教练打卡信息",
+                    url: "/User/daka",
+=======
                     path: "/main/xueyuan",
                     name: "xueyuan",
                     label: "所有学员信息管理",
@@ -71,12 +84,24 @@ export default {
                     name: "daka",
                     label: "打卡",
                     url: "/Driver/daka",
+>>>>>>> d053419e4c4f3b764edf93119f0c1bd3d93f55f1
                 },
                 {
                     path: "/main/grade",
                     name: "grade",
+<<<<<<< HEAD
+                    label: "教练录入成绩",
+                    url: "/User/grade",
+                },
+                {
+                    path: "menulist",
+                    name: "menulist",
+                    label: "角色列表",
+                    url: "/User/menulist",
+=======
                     label: "成绩",
                     url: "/Driver/grade",
+>>>>>>> d053419e4c4f3b764edf93119f0c1bd3d93f55f1
                 },
             ]
         };

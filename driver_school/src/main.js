@@ -4,8 +4,16 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
 import store from './store';
+import './api/mock'
+import { createApp } from 'vue'
+import axios from 'axios'
+import http from "@/utils/http"
+// import VueAxios from 'vue-axios'
 
+// Vue.use(VueAxios,axios)
 Vue.config.productionTip = false
+Vue.prototype.$http = http;
+
 Vue.use(ElementUI)
 
 new Vue({
@@ -13,3 +21,8 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app')
+
+// Vue.prototype.$http = axios
+// const app = createApp(App)
+// app.config.globalProperties.$axios = axios
+// app.mount('#app')

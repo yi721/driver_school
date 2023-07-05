@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>所有学员信息列表</h1>
-        <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button>
+        <!-- <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button> -->
         <div class="search-container">
             <el-input class="keyword-input" v-model="keyword" placeholder="请输入关键信息" size="small"></el-input>
         </div>
@@ -10,11 +10,11 @@
             </el-table-column>
             <el-table-column prop="age" label="性别" width="80">
             </el-table-column>
-            <el-table-column prop="Id" label="账号" width="80">
+            <el-table-column prop="userId" label="账号" width="80">
             </el-table-column>
-            <el-table-column prop="idkind" label="证件类型" width="80">
+            <el-table-column prop="idKind" label="证件类型" width="80">
             </el-table-column>
-            <el-table-column prop="idcard" label="证件号码" width="120">
+            <el-table-column prop="idCard" label="证件号码" width="120">
             </el-table-column>
             <el-table-column prop="phone" label="手机号码" width="120">
             </el-table-column>
@@ -22,7 +22,19 @@
             </el-table-column>
             <el-table-column prop="entry" label="报名进度" width="100">
             </el-table-column>
-            <el-table-column prop="degree" label="考试进度" width="120">
+            <el-table-column prop="exam" label="考试进度" width="120">
+            </el-table-column>
+            <el-table-column prop="instructorId" label="教练id" width="120">
+            </el-table-column>
+            <el-table-column prop="planA" label="科一题目进度" width="120">
+            </el-table-column>
+            <el-table-column prop="planB" label="科二进度" width="120">
+            </el-table-column>
+            <el-table-column prop="planC" label="科三进度" width="120">
+            </el-table-column>
+            <el-table-column prop="planD" label="科四题目进度" width="120">
+            </el-table-column>
+            <el-table-column prop="time" label="完成训练时间（可预约五天后的考试）" width="120">
             </el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
@@ -42,18 +54,18 @@
                         <el-option label="女" value="女"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="账号" prop="Id">
-                    <el-input v-model="model.Id"></el-input>
+                <el-form-item label="账号" prop="userId">
+                    <el-input v-model="model.userId"></el-input>
                 </el-form-item>
-                <el-form-item label="证件类别" prop="idkind">
-                    <el-select v-model="model.idkind" placeholder="请选择">
+                <el-form-item label="证件类别" prop="idKind">
+                    <el-select v-model="model.idKind" placeholder="请选择">
                         <el-option label="居民身份证" value="居民身份证"></el-option>
                         <el-option label="护照" value="护照"></el-option>
                         <el-option label="港澳台通行证" value="港澳台通行证"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="证件号码" prop="idcard">
-                    <el-input v-model="model.idcard"></el-input>
+                <el-form-item label="证件号码" prop="idCard">
+                    <el-input v-model="model.idCard"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号码" prop="phone">
                     <el-input v-model="model.phone"></el-input>
@@ -69,8 +81,26 @@
                         <el-option label="未报名" value="未报名"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="考试进度" prop="degree">
-                    <el-input v-model="model.degree"></el-input>
+                <el-form-item label="考试进度" prop="exam">
+                    <el-input v-model="model.exam"></el-input>
+                </el-form-item>
+                <el-form-item label="教练id" prop="instructorId">
+                    <el-input v-model="model.instructorId"></el-input>
+                </el-form-item>
+                <el-form-item label="科一题目进度" prop="planA">
+                    <el-input v-model="model.planA"></el-input>
+                </el-form-item>
+                <el-form-item label="科二进度" prop="planB">
+                    <el-input v-model="model.planB"></el-input>
+                </el-form-item>
+                <el-form-item label="科三进度" prop="planC">
+                    <el-input v-model="model.planC"></el-input>
+                </el-form-item>
+                <el-form-item label="科四题目进度" prop="planD">
+                    <el-input v-model="model.planD"></el-input>
+                </el-form-item>
+                <el-form-item label="完成训练时间（可预约五天后的考试）" prop="time">
+                    <el-input v-model="model.time"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary">
@@ -87,11 +117,12 @@
 
 import { successMsg } from "@/utils/message";
 import { provinceAndCityData, CodeToText, TextToCode } from "element-china-area-data";
+// import { studentDel} from "@/api/api.js";
 export default {
     // inject: ['reload'],
     data() {
         let validId = (rule, value, callback) => {
-            if (this.model.Id == '') {
+            if (this.model.userId == '') {
                 return callback(new Error('请输入账号'))
             } else {
                 if (!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value)) {
@@ -105,13 +136,20 @@ export default {
             model: {
                 name: '',
                 sex: '',
-                Id: '',
+                userId: '',
                 phone: '',
-                idcard: '',
-                idkind: '',
+                idCard: '',
+                idKind: '',
                 region: '',
                 entry: '',
-                degree: ''
+                exam: '',
+                instructorId:'',
+                planA: '',
+                planB: '',
+                planC: '',
+                planD: '',
+                time: '',
+
             },
             keyword: "",
             studentList: [],
@@ -124,40 +162,64 @@ export default {
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ],
-                Id: [
+                userId: [
                     { required: true, validator: validId, tirgger: 'blur' }
                 ],
                 sex: [
                     { required: true, message: '请输入性别', trigger: 'change' }
                 ],
-                idcard: [
+                idCard: [
                     { required: true, message: '请输入证件号码', trigger: 'blur' }
                 ],
-                idkind: [
+                idKind: [
                     { required: true, message: '请选择证件类型', trigger: 'change' }
                 ],
                 region: [
                     { required: true, message: '请输入省份', trigger: 'blur' }
-                ]
+                ],
+                planA: [
+                    { required: true, message: '科一题目进度', trigger: 'blur' }
+                ],
+                planB: [
+                    { required: true, message: '科二进度', trigger: 'blur' }
+                ],
+                planC: [
+                    { required: true, message: '科三进度', trigger: 'blur' }
+                ],
+                planD: [
+                    { required: true, message: '科四题目进度', trigger: 'blur' }
+                ],
+                time: [
+                    { required: true, message: '请输入完成训练时间(如2023:6:30)', trigger: 'blur' }
+                ],
             }
         }
     },
     async mounted() {
-        //const res = await this.$http.get(`/student/stu-list`)
+        
+        const res = await this.$http.get(`/student/stu-list`)
         console.log('res', res);
-        this.studentList = res.data.data.list
-        console.log(this.studentList)
-        this.total = res.data.data.total
+        this.studentList = res.data.data
+
+        // console.log(this.studentList)
+        // this.total = res.data.data.total
     },
     methods: {
-        addBtnOnClick() {
-            this.stuFormVisible = true
-            this.isEdit = false
-            this.model = this.$options.data().model
+        async inputChanged(keyword) {
+            // const res = await this.$http.get(`/jwstudent/stu-page?keyword=${keyword}&pageSize=${this.pageSize}&pageNum=1`, this.model)
+            const res = await this.$http.get(`/student/find/{id}`)
+            this.studentList = res.data.data.list
+            this.total = res.data.data.total
         },
         resetForm() {
             this.model = this.$options.data().model
         },
+        // addBtnOnClick() {
+        //     this.stuFormVisible = true
+        //     this.isEdit = false
+        //     this.model = this.$options.data().model
+        // },
+    
         async submit() {
             this.$refs.form.validate(async (valid) => {
                 console.log(valid)
@@ -166,14 +228,14 @@ export default {
                         // 编辑
                         // 处理region
                         this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/update', this.model)
+                        const res = await this.$http.post('/student/update', this.model)
                         successMsg('修改成功')
                         this.reload()
                     } else {
                         //添加表单
                         // 处理region
                         this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/add', this.model)
+                        const res = await this.$http.post('/student/insert', this.model)
                         successMsg('添加成功')
                         this.reload()
                     }
@@ -186,6 +248,9 @@ export default {
         async handleEdit(row) {
             this.isEdit = true
             // this.model = row
+            // studentDel(row.id).then(res => {
+            //     console.log(res)
+            // })
             this.model = JSON.parse(JSON.stringify(row)) //避免引用传递，做一次数据拷贝
             this.model.selectedOptions = [TextToCode['北京市'].code, TextToCode['北京市']['市辖区'].code]
             this.stuFormVisible = true
@@ -195,7 +260,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                //const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
+                const res = await this.$http.post(`/student/delete/{id}`)
                 this.$message({
                     type: 'success',
                     message: '删除成功!'

@@ -25,6 +25,7 @@
                 </div>
             </el-form>
         </div>
+
     </div>
 </template>
     
@@ -41,7 +42,6 @@ export default {
         return {
             validateCode: '',
             model: { // 登录用户名密码
-                UserId: '',
                 username: '',
                 password: '',
                 validateCode: ''
@@ -72,11 +72,18 @@ export default {
                     // 验证登录
                     if (this.validateCode.toLowerCase() === this.model.validateCode.toLowerCase()) {
                         await this.$http.post('/user/login', this.model).then(async res => {
-                            console.log(res);
+                            // console.log(res);
                             this.$router.push('/')
                             successMsg('登录成功')
-                            // this.model.UserId=res.data.data.id;
-                            // this.$store.commit('setLoginIn', true)
+                            console.log(res.data.data.userInfo);
+                            console.log(res.data.data.userInfo.id);
+                            this.changeIndex('首页')
+                            this.$store.commit('setUserId', res.data.data.userInfo.id)
+                            this.$store.commit('setdescription', res.data.data.userRole.description)
+                            if (this.instructor > 0) {
+
+                            }
+                            this.$store.commit('setLoginIn', true)
                         })
                     } else {
                         errorMsg('验证码错误')

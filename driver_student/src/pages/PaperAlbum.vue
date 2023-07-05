@@ -2,7 +2,7 @@
     <div class="singer-album">
         <div class="album-slide">
             <div class="singer-img">
-                <img :src="attachImageUrl(singer.pic)" alt="">
+                <img :src="attachImageUrl(ziliaoList.pic)" alt="">
             </div>
             <ul class="info">
                 <li>资料名称：{{ }}</li>
@@ -12,8 +12,8 @@
         </div>
         <div class="album-content">
             <div class="intro">
-                <h2>{{ }}</h2>
-                <span>{{ }}</span>
+                <h2>hhh{{ }}</h2>
+                <span>hhh{{ }}</span>
             </div>
             <div class="content">
             </div>
@@ -23,48 +23,20 @@
   
 <script>
 import { mixin } from '../mixins'
-import { mapGetters } from 'vuex'
-
 export default {
-    name: 'singer-album',
-    components: {
-
-    },
     mixins: [mixin],
     data() {
         return {
-            singerId: '',
-            singer: {}
+            ziliaoList: [{
+                id: '1',
+                name: '科一试题',
+                pic: '',
+                title: '',
+            }
+            ]
         }
     },
-    computed: {
-        // ...mapGetters([
-        //     'tempList',
-        //     'listOfSongs'
-        // ])
-    },
-    mounted() {
-        // this.singerId = this.$route.params.id // 给歌单ID赋值
-        // this.singer = this.tempList
-        // this.getSongList()
-    },
     methods: {
-        // getSongList() {
-        //     getSongOfSingerId(this.singerId)
-        //         .then(res => {
-        //             this.$store.commit('setListOfSongs', res)
-        //         })
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
-        // attachSex(value) {
-        //     if (value === 0) {
-        //         return '女'
-        //     } else if (value === 1) {
-        //         return '男'
-        //     }
-        // }
     }
 }
 </script>

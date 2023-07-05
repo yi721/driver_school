@@ -1,8 +1,8 @@
 <template>
     <div class="home">
-        <div class="section" v-for="(item, index) in paperList" :key="index">
-            <div class="section-title">{{ item.name }}</div>
-            <content-list :contentList="item.list"></content-list>
+        <div class="section">
+            <div class="section-title">试卷</div>
+            <content-list :contentList="paperList"></content-list>
         </div>
     </div>
 </template>
@@ -13,18 +13,14 @@ export default {
         ContentList
     },
     async mounted() {
-        const res = await this.$http.get(``)
+        const res = await this.$http.get(`/paper/paper-list`)
         console.log(res);
-        this.paperList.list = res.data.list
+        this.paperList = res.data.data
         console.log(this.paperList);
     },
     data() {
         return {
-            paperList: [
-                {
-                    name: "在线做题", list: []
-                },
-            ]
+            paperList: []
         }
 
     },

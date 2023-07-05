@@ -5,15 +5,17 @@
                 <img :src=attachImageUrl(avator) alt="">
             </div>
             <ul class="album-info">
-                <li>姓名： {{ username }}</li>
-                <li>性别： {{ userSex }}</li>
-                <li>年龄: {{ age }}</li>
-                <li>手机号码：{{ phone }}</li>
-                <li>教练:{{ instructor }}</li>
+                <li>姓名： {{ this.username }}</li>
+                <li>年龄: {{ this.age }}</li>
+                <li>手机号码：{{ this.phone }}</li>
+                <li>教练:{{ this.instructor }}</li>
             </ul>
         </div>
-
         <div class="album-content">
+            <div class="album-title">
+                <li>当前进度：正处于{{ this.description }}：{{ entry }}%</li>
+                <el-button style="margin-left: 520px;" @click="Baomin()">报名考试</el-button>
+            </div>
             <div class="pbody">
                 <div class="content">
                     <h1 class="title">
@@ -25,209 +27,138 @@
                             <div class="song-item">
                                 <span class="item-index"></span>
                                 <span class="item-title">科目</span>
-                                <span class="item-name">学习进度</span>
-                                <span class="item-intro">当前可报名</span>
+                                <span class="item-intro">考试成绩</span>
                             </div>
                         </li>
                         <li class="list-content">
                             <div class="song-item">
                                 <span class="item-index"></span>
                                 <span class="item-title">科一</span>
-                                <span class="item-name">{{ plan_a }}</span>
-                                <span class="item-intro">
-                                    <el-button v-if="isNeed1" size="mini" type="primary" round plain @click="Baomin1()">
-                                        报名考试
-                                    </el-button>
-                                </span>
+                                <span class="item-intro">{{ plan_a }}</span>
                             </div>
                         </li>
                         <li class="list-content">
                             <div class="song-item">
                                 <span class="item-index"></span>
                                 <span class="item-title">科二</span>
-                                <span class="item-name">{{ plan_b }}</span>
-                                <span class="item-intro">
-                                    <el-button v-if="isNeed2" size="mini" type="primary" round plain @click="Baomin2()">
-                                        报名考试
-                                    </el-button>
-                                </span>
+                                <span class="item-intro">{{ plan_b }}</span>
                             </div>
                         </li>
                         <li class="list-content">
                             <div class="song-item">
                                 <span class="item-index"></span>
                                 <span class="item-title">科三</span>
-                                <span class="item-name">{{ plan_c }}</span>
-                                <span class="item-intro">
-                                    <el-button v-if="isNeed3" size="mini" type="primary" round plain @click="Baomin3()">
-                                        报名考试
-                                    </el-button>
-                                </span>
+                                <span class="item-intro">{{ plan_c }}</span>
                             </div>
                         </li>
                         <li class="list-content">
                             <div class="song-item">
                                 <span class="item-index"></span>
                                 <span class="item-title">科四</span>
-                                <span class="item-name">{{ plan_d }}</span>
-                                <span class="item-intro">
-                                    <el-button v-if="isNeed4" size="mini" type="primary" round plain @click="Baomin4()">
-                                        报名考试
-                                    </el-button>
-                                </span>
+                                <span class="item-intro">{{ plan_d }}</span>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+        <el-dialog title="考试报名" :visible.sync="BaominFormVisible" :close-on-click-modal="false">
+            <el-form label-position="top" label-width="5rem" :model="model" ref="form">
+                <el-form-item style="margin-top: 2px;text-align: center;">
+                    <li style="text-align: center;">当前报名科目是：{{ this.description }},是否继续报名?</li>
+                </el-form-item>
+                <el-form-item style="margin-top: 2px;text-align: center;">
+                    <el-button @click="sumbit()">报名</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
-  
 <script>
 import { mixin } from '../mixins'
 import { mapGetters } from 'vuex'
-// import { getUserOfId } from '../api'
-
+import { errorMsg } from '@/utils/message'
 export default {
     components: {
-
     },
     mixins: [mixin],
     data() {
         return {
-            FormVisible: true,
-            isNeed1: true,
-            isNeed2: true,
-            isNeed3: true,
-            isNeed4: true,
+            BaominFormVisible: false,
             avator: '',//头像
             username: '',
-            userSex: '',
             age: '',
             instructor: '',//教练
+            instructorId: '',
             phone: '',
+            entry: '',//进度
             plan_a: '',
             plan_b: '',
             plan_c: '',
             plan_d: '',
             model: {
-
             }
         }
     },
     computed: {
         ...mapGetters([
-            'UserId'
+            'userId',
+            'description'
         ])
     },
-    mounted() {
-        // this.getMsg(this.UserId);
+    async mounted() {
+        try {
+            console.log(this.description)
+            const res = await this.$http.get(`/student/find/${this.userId}`)
+            console.log(res)
+            this.username = res.data.data.name
+            this.age = res.data.data.age
+            this.entry = res.data.data.entry
+            this.phone = res.data.data.phone
+            this.plan_a = res.data.data.planA
+            this.plan_b = res.data.data.planB
+            this.plan_c = res.data.data.planC
+            this.plan_d = res.data.data.planD
+            this.instructorId = res.data.data.instructorId
+            // console.log(res.data.data.instructorId)
+            const res1 = await this.$http.get(`/instructor/find/${this.instructorId}`)
+            this.instructor = res1.data.data.name
+        } catch (err) {
+            console.log(err)
+        }
     },
     methods: {
-        //     async queryParam() {
-        //         try {
-        //             const param = {
-        //                 name: 'taskNeedAudit'
-        //             }
-        //             const res = await paramsApi.getVal(param)
-        //             if (res == 'true') {
-        //                 this.isNeedAudit = true
-        //             } else {
-        //                 this.isNeedAudit = false
-        //             }
-        //             console.log('是否需要审核', this.isNeedAudit, typeof this.isNeedAudit)
-        //         } catch (e) {
-        //             this.Message(e, 'error')
-        //         }
-        // },
-        getMsg(UserId) {
-            getUserOfId(UserId).then(res => {
-                this.avator = res.avator;
-                this.username = res.username;
-                this.userSex = res.userSex;
-                this.age = res.age;
-                this.instructor = res.instructor;
-                this.phone = res.phone;
-                this.plan_a = res.plan_a;
-                this.plan_b = res.plan_b;
-                this.plan_c = res.plan_c;
-                this.plan_d = res.plan_d;
-            })
+        async Baomin() {
+            //审核没有报名资格
+            const res = await this.$http.get(`/student/get-entry/${this.userId}`)
+            console.log(res.data.data)
+            if (res.data.data === 1) {
+                this.BaominFormVisible = true
+            }//审核可以报名
+            else {
+                errorMsg('当前没有资格报名！')
+                return
+            }
+
+
         },
-        Baomin1() {
-            this.$confirm('当前报名科目为科目一, 是否继续?', '提示', {
+
+        async handleDel(row) {
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
+                const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
                 this.$message({
                     type: 'success',
-                    message: '报名成功!'
+                    message: '删除成功!'
                 });
                 this.reload()
             }).catch(() => {
                 this.$message({
                     type: 'info',
-                    message: '已取消报名'
-                });
-            });
-        },
-        Baomin2() {
-            this.$confirm('当前报名科目为科目二, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
-                this.$message({
-                    type: 'success',
-                    message: '报名成功!'
-                });
-                this.reload()
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消报名'
-                });
-            });
-        },
-        Baomin3() {
-            this.$confirm('当前报名科目为科目三, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
-                this.$message({
-                    type: 'success',
-                    message: '报名成功!'
-                });
-                this.reload()
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消报名'
-                });
-            });
-        },
-        Baomin4() {
-            this.$confirm('当前报名科目为科目四, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
-                this.$message({
-                    type: 'success',
-                    message: '报名成功!'
-                });
-                this.reload()
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消报名'
+                    message: '已取消删除'
                 });
             });
         },

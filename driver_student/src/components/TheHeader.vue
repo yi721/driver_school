@@ -28,13 +28,23 @@
                 {{ item.name }}
             </li>
         </ul>
+        <!--设置-->
+        <div class="header-right" v-show="loginIn">
+            <div id="user">
+                <img :src="attachImageUrl()" alt="">
+            </div>
+            <ul class="menu">
+                <li v-for="(item, index) in menuList" :key="index" @click="goMenuList(item.path)">{{ item.name }}</li>
+            </ul>
+        </div>
     </div>
 </template>
   
 <script>
 import { mapGetters } from 'vuex';
-
+import { mixin } from '../mixins'
 export default {
+    mixins: [mixin],
     data() {
         return {
             //左侧导航栏
@@ -49,14 +59,32 @@ export default {
                 { name: '登录', path: '/login' },
                 { name: '注册', path: '/register' }
             ],
+            menuList: [
+                { name: '设置', path: '/setting' },
+                { name: '退出', path: 0 }
+            ],
             //搜索关键字
             keywords: '',
         }
     },
+    mounted() {
+        document.querySelector('#user').addEventListener('click', function (e) {
+            document.querySelector('.menu').classList.add('show')
+            e.stopPropagation()// 关键在于阻止冒泡
+        }, false)
+        // 点击“菜单”内部时，阻止事件冒泡。(这样点击内部时，菜单不会关闭)
+        document.querySelector('.menu').addEventListener('click', function (e) {
+            e.stopPropagation()
+        }, false)
+        document.addEventListener('click', function () {
+            document.querySelector('.menu').classList.remove('show')
+        }, false)
+    },
     computed: {
         ...mapGetters([
             'activeName',
-            'loginIn'
+            'loginIn',
+            // 'avator'
         ])
     },
     methods: {
@@ -69,7 +97,23 @@ export default {
         },
         goSearch() {
             this.$router.push({ path: './search', query: { keyword: this.keywords } })
-        }
+        },
+        goMenuList(path) {
+            if (path === 0) {
+                this.$store.commit('setIsActive', false)
+            }
+            document.querySelector('.menu').classList.remove('show')
+            if (path) {
+                this.$router.push({ path: path })
+            } else {
+                this.$store.commit('setLoginIn', false)
+                this.$router.go(0)
+            }
+        },
+        changeIndex(value) {
+            this.$store.commit('setActiveName', value)
+        },
+
     }
 
 }

@@ -3,13 +3,14 @@ import App from './App.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
-import store from './store';
-import './api/mock'
+import store from './store/index';
 import { createApp } from 'vue'
 import axios from 'axios'
 import http from "@/utils/http"
 // import VueAxios from 'vue-axios'
 
+import jsCookie from 'js-cookie'
+Vue.prototype.$cookie = jsCookie; 
 // Vue.use(VueAxios,axios)
 Vue.config.productionTip = false
 Vue.prototype.$http = http;

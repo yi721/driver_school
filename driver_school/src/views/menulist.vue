@@ -9,6 +9,7 @@
             <el-table-column prop="description" label="描述" width="380">
             </el-table-column>
             <el-table-column label="操作">
+                <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
                     <el-button size="mini" type="success" @click="handleMenuBtn(scope.row, 1)">菜单</el-button>
                 </template>
@@ -67,7 +68,7 @@ export default {
             const res = await this.$http.post(`/role/add-role-menu-relation?id=${this.selectedRoleId}`, newMenuList)
             successMsg('修改成功')
             this.reload()
-            // console.log('updateMenu', res);
+            // console.log('updateMenu', res);a
         }
 
     },

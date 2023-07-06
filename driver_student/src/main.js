@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store/index';
+import store from './store';
 import './assets/css/index.scss'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import router from './router';
+import router from './router/index';
 import http from './utils/http'
 
 import '@/assets/js/iconfont.js'

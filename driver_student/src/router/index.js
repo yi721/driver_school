@@ -31,7 +31,7 @@ const routes = [
     {
         path: "/paper",
         name: "paper",
-        component: () => import("../pages/PaperList.vue"),
+        component: () => import("../pages/Paper.vue"),
     },
     {
         path: "/paperAlbum",
@@ -47,6 +47,11 @@ const routes = [
         path: "/search",
         name: "search",
         component: () => import("../pages/Search.vue"),
+    },
+    {
+        path: "/setting",
+        name: "setting",
+        component: () => import("../pages/Setting.vue"),
     },
 ]
 

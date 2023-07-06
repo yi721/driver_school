@@ -6,6 +6,7 @@
             </div>
             <div class="update-form" style="padding-right:3rem;">
                 <el-form :model="model" label-width="5rem" :rules="rules" ref="updateForm">
+
                     <el-form-item label="原密码" prop="oldPassword">
                         <el-input v-model="model.oldPassword"></el-input>
                     </el-form-item>
@@ -79,6 +80,7 @@ export default {
             //     }
             // });
             // successMsg('密码已更改，请重新登录')
+            const res = await this.$http.post(`/user/update/password`, this.model)
             errorMsg('请输入正确原密码！')
         },
         resetForm() {

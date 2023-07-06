@@ -1,9 +1,10 @@
 <template>
     <div>
-        <h1>驾校学员信息列表</h1>
+        <h1>教练学员信息列表</h1>
         <!-- <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button> -->
         <div class="search-container">
-            <el-input class="keyword-input" v-model="keyword" placeholder="请输入关键信息" size="small"></el-input>
+            <el-input class="keyword-input" @change="inputChanged" v-model="keyword" placeholder="请输入关键信息"
+                size="small"></el-input>
         </div>
         <el-table :data="studentList" stripe style="width: 100%">
             <el-table-column prop="name" label="姓名" width="80">
@@ -25,6 +26,7 @@
             <el-table-column prop="degree" label="考试进度" width="120">
             </el-table-column>
             <el-table-column label="操作" width="180">
+                <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEdit(row)">编辑</el-button>
                     <el-button size="mini" type="danger" @click="handleDel(row)">删除</el-button>
@@ -73,11 +75,9 @@
                     <el-input v-model="model.degree"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary">
-                        提交
-                    </el-button>
-                    <el-button>重置</el-button>
-                </el-form-item>
+          <el-button type="primary" @click="submit"> 提交 </el-button>
+          <el-button  @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
             </el-form>
         </el-dialog>
     </div>
@@ -88,7 +88,12 @@
 import { successMsg } from "@/utils/message";
 import { provinceAndCityData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
-    // inject: ['reload'],
+    inject: ['reload'],
+    async mounted() {
+    const res = await this.$http.get(`/student/stu-list-by-instructorid/{id}`);
+    console.log("res", res);
+    this.InstructorList = res.data.data;
+  },
     data() {
         let validId = (rule, value, callback) => {
             if (this.model.Id == '') {
@@ -148,59 +153,60 @@ export default {
         //     this.isEdit = false
         //     this.model = this.$options.data().model
         // },
-        resetForm() {
-            this.model = this.$options.data().model
-        },
-        async submit() {
-            this.$refs.form.validate(async (valid) => {
-                console.log(valid)
-                if (valid) {
-                    if (this.isEdit) {
-                        // 编辑
-                        // 处理region
-                        this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/update', this.model)
-                        successMsg('修改成功')
-                        this.reload()
-                    } else {
-                        //添加表单
-                        // 处理region
-                        this.model.region = CodeToText[this.model.selectedOptions[0]]
-                        // const res = await this.$http.post('/jwstudent/add', this.model)
-                        successMsg('添加成功')
-                        this.reload()
-                    }
-                } else {
-                    errorMsg('检查填写')
-                    return false;
-                }
-            });
-        },
-        async handleEdit(row) {
-            this.isEdit = true
-            // this.model = row
-            this.model = JSON.parse(JSON.stringify(row)) //避免引用传递，做一次数据拷贝
-            this.model.selectedOptions = [TextToCode['北京市'].code, TextToCode['北京市']['市辖区'].code]
-            this.stuFormVisible = true
-        }, async handleDel(row) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(async () => {
-                // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
-                this.reload()
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-        },
+        // resetForm() {
+        //     this.model = this.$options.data().model
+        // },
+        // async submit() {
+        //     this.$refs.form.validate(async (valid) => {
+        //         console.log(valid)
+        //         if (valid) {
+        //             if (this.isEdit) {
+        //                 // 编辑
+        //                 // 处理region
+        //                 this.model.region = CodeToText[this.model.selectedOptions[0]]
+        //                 // const res = await this.$http.post('/jwstudent/update', this.model)
+        //                 successMsg('修改成功')
+        //                 this.reload()
+        //             } else {
+        //                 //添加表单
+        //                 // 处理region
+        //                 this.model.region = CodeToText[this.model.selectedOptions[0]]
+        //                 // const res = await this.$http.post('/jwstudent/add', this.model)
+        //                 successMsg('添加成功')
+        //                 this.reload()
+        //             }
+        //         } else {
+        //             errorMsg('检查填写')
+        //             return false;
+        //         }
+        //     });
+        // },
+        // async handleEdit(row) {
+        //     this.isEdit = true
+        //     // this.model = row
+        //     this.model = JSON.parse(JSON.stringify(row)) //避免引用传递，做一次数据拷贝
+        //     this.model.selectedOptions = [TextToCode['北京市'].code, TextToCode['北京市']['市辖区'].code]
+        //     this.stuFormVisible = true
+        // },
+        //  async handleDel(row) {
+        //     this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        //         confirmButtonText: '确定',
+        //         cancelButtonText: '取消',
+        //         type: 'warning'
+        //     }).then(async () => {
+        //         // const res = await this.$http.post(`/jwstudent/delete/${row.id}`)
+        //         this.$message({
+        //             type: 'success',
+        //             message: '删除成功!'
+        //         });
+        //         this.reload()
+        //     }).catch(() => {
+        //         this.$message({
+        //             type: 'info',
+        //             message: '已取消删除'
+        //         });
+        //     });
+        // },
 
     },
 

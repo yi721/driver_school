@@ -7,7 +7,7 @@
                         <img src="../assets/OIP-C.jpg">
                         <div class="admin-info">
                             <p class="name">Admin</p>
-                            <p class="access">管理员</p> -->
+                            <p class="access">管理员</p> 
                             <!-- {{this.userRole.schoolName}} -->
                         </div>
                     </div>

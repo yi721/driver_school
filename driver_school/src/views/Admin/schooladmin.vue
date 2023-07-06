@@ -10,11 +10,11 @@
       <el-table-column prop="roleId" label="角色id" width="180">
       </el-table-column>
       <el-table-column label="操作">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="success" @click="handlePass(scope.row, 1)">通过</el-button>
-                    <el-button size="mini" type="danger" @click="handlePass(scope.row, 0)">打回</el-button>
-                </template>
-            </el-table-column>
+        <template slot-scope="scope">
+          <el-button size="mini" type="success" @click="handlePass(scope.row, 1)">通过</el-button>
+          <el-button size="mini" type="danger" @click="handlePass(scope.row, 0)">打回</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -25,22 +25,22 @@ export default {
   inject: ["reload"],
   name: "AuditList",
   async mounted() {
-    const res = await this.$http.get("/role/applyList").catch(() => {});
+    const res = await this.$http.get("/role/applyList").catch(() => { });
     this.AuditList = res.data.data;
   },
   data() {
     return {
-        AuditList: [],
+      AuditList: [],
     }
 
   },
 
   methods: {
-  
+
     async handlePass(row, isPass) {
       const res = await this.$http.post(
-        `/role/audit/{applyId}/{passed}${row.id}/${isPass}`
-      ).catch(() => {});
+        `/role/audit/${row.id}/${isPass}`
+      ).catch(() => { });
       if (isPass === 1) {
         successMsg("操作成功");
       } else {

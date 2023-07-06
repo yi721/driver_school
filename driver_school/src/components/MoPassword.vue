@@ -66,21 +66,20 @@ export default {
     },
     methods: {
         async submit() {
-            // this.$refs.updateForm.validate(async (valid) => {
-            //     console.log(valid)
-            //     if (valid) {
-            //         this.model.userId = this.userInfo.id
-            //         const res = await this.$http.post(`/user/update/password`, this.model)
-            //         console.log(res);
-            //         successMsg('密码已更改，请重新登录')
-            //         this.$router.push('/login')
-            //     } else {
-            //         
-            //         return false;
-            //     }
-            // });
-            // successMsg('密码已更改，请重新登录')
-            const res = await this.$http.post(`/user/update/password`, this.model)
+            this.$refs[updateForm].validate(async (valid) => {
+                console.log(valid)
+                if (valid) {
+                    this.model.userId = this.userInfo.id
+                    const res = await this.$http.post(`/user/update/password`, this.model)
+                    console.log(res);
+                    successMsg('密码已更改，请重新登录')
+                    this.$router.push('/login')
+                } else {
+
+                    return false;
+                }
+            });
+            // const res = await this.$http.post(`/user/update/password`, this.model)
             errorMsg('请输入正确原密码！')
         },
         resetForm() {

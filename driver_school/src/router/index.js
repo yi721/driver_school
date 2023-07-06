@@ -7,20 +7,10 @@ Vue.use(VueRouter);
 //驾校管理员
 const schoolRoutes = [
     {
-        path: "audit",
-        name: "audit",
-        component: () => import("../views/SchholAdmin/Audit.vue"),//报名资格审核
-    },
-    {
         path: "trainer",
         name: "trainer",
         component: () => import("../views/SchholAdmin/Trainer.vue"),//教练信息管理
-    },
-    {
-        path: "student",
-        name: "student",
-        component: () => import("../views/SchholAdmin/Student.vue"),//学员信息管理
-    },
+    }
 
 ];
 //管理员
@@ -43,13 +33,23 @@ const adminRoutes = [
     {
         path: "menulist",
         name: "menulist",
-        component: () => import("../views/menulist.vue"),//驾校管理员审批
+        component: () => import("../views/menulist.vue"),
+    },
+    {
+        path: "examchakan",
+        name: "examchakan",
+        component: () => import("../views/Admin/examchakan.vue"),//管理员考试查看信息
     },
 
 
 ];
 //教练
 const driverRoutes = [
+    {
+        path: "audit",
+        name: "audit",
+        component: () => import("../views/Driver/Audit.vue"),//报名资格审核
+    },
     {
         path: "/main/daka",
         name: "daka",
@@ -58,17 +58,20 @@ const driverRoutes = [
     {
         path: "/main/grade",
         name: "grade",
-        component: () => import("../views/Driver/grade.vue"),//教练信息管理
+        component: () => import("../views/Driver/grade.vue"),//录入成绩
+    }, {
+        path: "student",
+        name: "student",
+        component: () => import("../views/Driver/Student.vue"),//学员信息管理
     },
-
 ];
 const routes = [
-   
+
     {
         path: "/",
         redirect: "/login",
     },
- //主路由
+    //主路由
     {
         path: "/main",
         name: "main",
@@ -79,7 +82,7 @@ const routes = [
             component: () => import("../views/Home"),
             meta: { isPublic: true },
         },
-     
+
         ...adminRoutes,
         ...schoolRoutes,
         ...driverRoutes,

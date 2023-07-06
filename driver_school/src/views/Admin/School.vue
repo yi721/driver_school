@@ -1,51 +1,30 @@
 <template>
   <div>
     <h1>驾校信息列表</h1>
-    <el-button size="small" type="primary" @click="addBtnOnClick"
-      >添加</el-button
-    >
-    <div class="search-container">
-      <el-input
-        class="keyword-input"
-        @change="inputChanged"
-        v-model="keyword"
-        placeholder="请输入关键信息"
-        size="small"
-      ></el-input>
-    </div>
+    <el-button size="small" type="primary" @click="addBtnOnClick">添加</el-button>
+    <!-- <div class="search-container">
+      <el-input class="keyword-input" @change="inputChanged" v-model="keyword" placeholder="请输入关键信息"
+        size="small"></el-input>
+    </div> -->
     <el-table :data="schoolList" stripe style="width: 100%">
       <el-table-column prop="id" label="驾校编号" width="80"> </el-table-column>
       <el-table-column prop="name" label="驾校名称" width="180">
       </el-table-column>
-      <el-table-column prop="address" label="驾校详细地址" width="280">
+      <el-table-column prop="address" label="驾校详细地址" width="380">
       </el-table-column>
-      <el-table-column prop="phone" label="驾校联系方式" width="180">
+      <el-table-column prop="phone" label="驾校联系方式" width="280">
       </el-table-column>
       <el-table-column label="操作" width="180">
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)"
-            >编辑</el-button
-          >
-          <el-button size="mini" type="danger" @click="handleDel(scope.row)"
-            >删除</el-button
-          >
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      title="驾校信息"
-      :visible.sync="schoolFormVisible"
-      :append-to-body="true"
-    >
+    <el-dialog title="驾校信息" :visible.sync="schoolFormVisible" :append-to-body="true">
       <!-- :visible.sync -->
-      <el-form
-        :rules="rules"
-        label-position="top"
-        label-width="5rem"
-        :model="model"
-        ref="form"
-      >
+      <el-form :rules="rules" label-position="top" label-width="5rem" :model="model" ref="form">
         <el-form-item label="驾校编号" prop="id">
           <el-input v-model="model.id"></el-input>
         </el-form-item>
@@ -77,6 +56,7 @@ export default {
     console.log("res", res);
     this.schoolList = res.data.data;
   },
+
   data() {
     let validId = (rule, value, callback) => {
       if (this.model.id == "") {
@@ -116,15 +96,10 @@ export default {
   },
 
   methods: {
-    async inputChanged(keyword) {
-      // const res = await this.$http.get(`/academy/academy-studengt-by-acaid-page?id=${this.userRole.academyId}&keyword=${keyword}&pageSize=${this.pageSize}&pageNum=1`)
-      const res = await this.$http
-        .get(`/school/getSchListByName${keyword}`)
-        .catch(() => {});
-      this.schoolList = res.data.data;
-      console.log("res");
-      this.total = res.data.data.total;
-    },
+    // async inputChanged(keyword) {
+    //   const res = await this.$http.get(`/school/getSchListByName`);
+    //   this.schoolList = res.data.data.list
+    // },
     addBtnOnClick() {
       this.schoolFormVisible = true;
       this.isEdit = false;
@@ -133,6 +108,7 @@ export default {
     resetForm() {
       this.model = this.$options.data().model;
     },
+
 
     async submit() {
       this.$refs.form.validate(async (valid) => {
@@ -150,13 +126,14 @@ export default {
               message: "修改成功",
             });
             this.reload();
-          } else {
-            //添加表单
-            // 处理region
-            const res = await this.$http.post("/school/insert", this.model);
-            successMsg("添加成功");
-            this.reload();
           }
+          // else {
+          //     //添加表单
+          //     // 处理region
+          //     const res = await this.$http.post('/instructor/insert', this.model)
+          //     successMsg('添加成功')
+          //     this.reload()
+          // }
         } else {
           //   errorMsg("检查填写");
           this.$message({
@@ -171,7 +148,7 @@ export default {
       this.isEdit = true;
       this.model = row;
       // this.model = JSON.parse(JSON.stringify(row)) //避免引用传递，做一次数据拷贝
-      this.InstuctorFormVisible = true;
+      this.schoolFormVisible = true;
     },
     async handleDel(row) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {

@@ -2,10 +2,10 @@
   <div>
     <h1>教练信息列表</h1>
     <!-- <el-button size="small" type="primary" @click="addBtnOnClick()">添加</el-button> -->
-          <div class="search-container">
-            <el-input class="keyword-input" @change="inputChanged" v-model="keyword" placeholder="请输入关键信息"
-                size="small"></el-input>
-        </div>
+    <div class="search-container">
+      <el-input class="keyword-input" @change="inputChanged" v-model="keyword" placeholder="请输入关键信息"
+        size="small"></el-input>
+    </div>
     <el-table :data="InstructorList" stripe style="width: 100%">
       <el-table-column prop="name" label="姓名" width="80"> </el-table-column>
       <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
@@ -21,27 +21,13 @@
       <el-table-column label="操作" width="180">
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)"
-            >编辑</el-button
-          >
-          <el-button size="mini" type="danger" @click="handleDel(scope.row)"
-            >删除</el-button
-          >
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      title="教练信息"
-      :visible.sync="InstuctorFormVisible"
-      :append-to-body="true"
-    >
-      <el-form
-        :rules="rules"
-        label-position="top"
-        label-width="5rem"
-        :model="model"
-        ref="form"
-      >
+    <el-dialog title="教练信息" :visible.sync="InstuctorFormVisible" :append-to-body="true">
+      <el-form :rules="rules" label-position="top" label-width="5rem" :model="model" ref="form">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="model.name"></el-input>
         </el-form-item>
@@ -65,7 +51,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submit"> 提交 </el-button>
-          <el-button  @click="resetForm('ruleForm')">重置</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -196,15 +182,16 @@ export default {
         .then(async () => {
           const res = await this.$http.post(`/instructor/delete/${row.id}`);
           this.$message({
-            type: "info",
-            message: "已取消删除",
+            type: "success",
+            message: "删除成功!",
           });
           this.reload();
         })
         .catch(() => {
+
           this.$message({
-            type: "success",
-            message: "删除成功!",
+            type: "info",
+            message: "已取消删除",
           });
         });
     },

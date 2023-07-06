@@ -1,7 +1,7 @@
 
 const configure = ({
     state: {
-        HOST: 'http://localhost:8888',//后台访问地址根目录
+        HOST: 'http://123.56.141.117:8081',//后台访问地址根目录
         activeName: '', // 菜单名
         loginIn: false,
     },

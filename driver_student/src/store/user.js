@@ -5,7 +5,8 @@ const user = ({
     state: {
         HOST: 'http://localhost:8888',
         userId: '',
-        description: ''//当前科目
+        description: '',//当前科目
+        avator: ''
     },
     getters: {
         userId: state => {
@@ -22,6 +23,13 @@ const user = ({
             }
             return description
         },
+        avator: state => {
+            let avator = state.avator
+            if (!userId) {
+                avator = JSON.parse(window.sessionStorage.getItem('avator') || null)
+            }
+            return avator
+        },
     },
     mutations: {
         setUserId: (state, userId) => {
@@ -31,6 +39,10 @@ const user = ({
         setdescription: (state, description) => {
             state.description = description
             window.localStorage.setItem('description', JSON.stringify(description))
+        },
+        setAvator: (state, avator) => {
+            state.avator = avator
+            window.localStorage.setItem('avator', JSON.stringify(avator))
         },
     },
     actions: {},

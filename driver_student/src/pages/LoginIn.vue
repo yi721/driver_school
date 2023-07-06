@@ -72,17 +72,15 @@ export default {
                     // 验证登录
                     if (this.validateCode.toLowerCase() === this.model.validateCode.toLowerCase()) {
                         await this.$http.post('/user/login', this.model).then(async res => {
-                            // console.log(res);
+                            console.log(res);
                             this.$router.push('/')
                             successMsg('登录成功')
                             console.log(res.data.data.userInfo);
-                            console.log(res.data.data.userInfo.id);
+                            console.log(res.data.data.userInfo.icon);
                             this.changeIndex('首页')
                             this.$store.commit('setUserId', res.data.data.userInfo.id)
                             this.$store.commit('setdescription', res.data.data.userRole.description)
-                            if (this.instructor > 0) {
-
-                            }
+                            this.$store.commit('setAvator', res.data.data.userInfo.icon)
                             this.$store.commit('setLoginIn', true)
                         })
                     } else {

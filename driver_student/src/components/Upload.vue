@@ -7,7 +7,7 @@
                 :before-upload="beforeAvatarUpload">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>修改头像</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过10M</div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg文件，且不超过10M</div>
             </el-upload>
         </div>
     </div>
@@ -32,19 +32,15 @@ export default {
     },
     methods: {
         uploadUrl() {
-            return `${this.$store.state.configure.HOST}/user/avatar/update?id=${this.userId}`
+            return `${this.$store.state.configure.HOST}/user/upload/icon/${this.userId}`
         },
         handleAvatarSuccess(res, file) {
-            if (res.code === 1) {
-                this.imageUrl = URL.createObjectURL(file.raw)
-                this.$store.commit('setAvator', res.avator)
-                this.$message({
-                    message: '修改成功',
-                    type: 'success'
-                })
-            } else {
-                this.notify('修改失败', 'error')
-            }
+            this.imageUrl = URL.createObjectURL(file.raw)
+            // this.$store.commit('setAvator', res.avator)
+            this.$message({
+                message: '修改成功',
+                type: 'success'
+            })
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg'

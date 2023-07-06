@@ -10,7 +10,7 @@ export const mixin = {
         },
         //获取图片地址
         attachImageUrl(srcUrl) {
-            return srcUrl ? this.$store.state.configure.Host + srcUrl : Image;
+            return srcUrl ? `http://47.92.228.229:8081/user/icon/${srcUrl}` : Image;
         },
         //根据模糊查询获取在线学习信息
         getStudy() {

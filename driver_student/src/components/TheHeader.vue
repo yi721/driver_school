@@ -12,17 +12,6 @@
                 @click="goPage(item.path, item.name)">
                 {{ item.name }}
             </li>
-
-            <li>
-                <div class="header-search">
-                    <input type="text" placeholder="搜索" @keyup.enter="goSearch()" v-model="keywords">
-                    <div class="search-btn" @click="goSearch()">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-sousuo"></use>
-                        </svg>
-                    </div>
-                </div>
-            </li>
             <li v-show="!loginIn" :class="{ active: item.name === activeName }" v-for="item in loginMsg" :key="item.path"
                 @click="goPage(item.path, item.name)">
                 {{ item.name }}
@@ -31,7 +20,7 @@
         <!--设置-->
         <div class="header-right" v-show="loginIn">
             <div id="user">
-                <img :src="attachImageUrl()" alt="">
+                <img :src="`http://123.56.141.117:8081/user/icon/${this.userId}`" alt="" :onerror="defaultImg">
             </div>
             <ul class="menu">
                 <li v-for="(item, index) in menuList" :key="index" @click="goMenuList(item.path)">{{ item.name }}</li>
@@ -63,8 +52,7 @@ export default {
                 { name: '设置', path: '/setting' },
                 { name: '退出', path: 0 }
             ],
-            //搜索关键字
-            keywords: '',
+            defaultImg: 'this.src="' + require('../assets/img/12.jpg') + '"',//默认图地址
         }
     },
     mounted() {
@@ -84,7 +72,8 @@ export default {
         ...mapGetters([
             'activeName',
             'loginIn',
-            // 'avator'
+            'avator',
+            'userId'
         ])
     },
     methods: {

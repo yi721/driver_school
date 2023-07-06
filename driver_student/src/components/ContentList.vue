@@ -22,7 +22,7 @@ export default {
     props: ['contentList'],
     methods: {
         goAlbum(item, type) {
-            this.$store.commit("setTempList", item);
+            // this.$store.commit("setTempList", item);
             if (type) {//试题
                 this.$router.push({ path: `/paperAlbum` })
             }
